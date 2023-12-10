@@ -19,4 +19,4 @@ def get_product_info(soup ,lst:list):
     return lst
 lst = []
 output = get_product_info(soup,lst)
-print(output[0])
+print(output)
