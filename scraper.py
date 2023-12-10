@@ -16,14 +16,5 @@ def get_product_info(soup):
         price = link 
         products_list = {'link' :link , 'product-name' : name , 'product-price' : price}
         print(products_list)
-# get the product info using requests_html Parser
-# def get_product_info(resp):
-#     all_products = resp.html.find('ul',first = True)
-#     products = all_products.find('li')
-#     for product in products:
-#         name = product.find('.woocommerce-loop-product__title')
-#         price_span = product.find('.price')
-#         price = price_span[0].find('bdi') # to print these results out ,try to print price[0]
-#         link = product.find('a')[0].absolute_links # try to print list(link)[0]
 
 output = get_product_info(soup)
