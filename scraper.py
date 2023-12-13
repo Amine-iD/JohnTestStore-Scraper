@@ -1,6 +1,6 @@
 from requests_html import HTMLSession 
 from bs4 import BeautifulSoup
-import csv
+import time
 session = HTMLSession()
 headers = {
             "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -52,9 +52,10 @@ def get_product_info():
         resp = session.get(link,headers=headers)
         soup = parser(link)
         data = {
-            'link':link ,
-            'name' : name ,
-            'price':price,
+            'Link':link ,
+            'Name' : name ,
+            'Price':price,
+            'Categorie' : category
             }
         try:
             category = soup.find('div' ,{'class':'product_meta'}).contents[3].text 
@@ -63,26 +64,16 @@ def get_product_info():
                 key = additional_info[i].contents[1].text.strip()
                 value = additional_info[i].contents[3].text.strip()
                 data[key] = value
-                # field_names.append(key) NOTE : .....
-            def write_to_csv():
-                with open('test.csv','w') as test_file:
-                    csv_writer = csv.DictWriter(test_file , FIELD_NAMES , delimiter='|')
-                    csv_writer.writeheader()
-                    for j in range(len(FIELD_NAMES)):
-                        if data[f'{FIELD_NAMES[j]}'] != True :
-                          ...  
-
+                
         except AttributeError :
             print("NOT FOUND THE PRODUCT :",product) ##tab-additional_information > table > tbody
-    #    print(field_names) With this I got all the possible attributes for each product NOTE:~This variable was used just once for non static attributes(which depend on products)~
 
 def cleaned_list(lst:list):
     """This function removes duplacted valus of a given list using casting of type :set object """
     return set(lst)
 
-# start = time.time()
-# data = get_product_info()
-# print(data)
-# lst = ['Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity','Gender', 'Material', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size','Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color','Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color','Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size','Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color','Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Pattern','Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern','Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size','Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size','Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity','Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Activity', 'Gender', 'Material', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Activity', 'Gender', 'Material', 'Size', 'Activity', 'Gender', 'Material', 'Size', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color']
-
-# CSV preparation : 
+start = time.time()
+data = get_product_info()
+print(data)
+end = time.time()
+print('DURATION :' ,end - start)
