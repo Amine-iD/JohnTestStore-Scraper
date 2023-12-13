@@ -44,6 +44,7 @@ def get_all_products():
 
 def get_product_info():
     products = get_all_products()
+    # field_names = [] NOTE : in the bottom of the function
     for product in products:
         link  =  product["link"]
         name  =  product["name"]
@@ -62,14 +63,20 @@ def get_product_info():
                 key = additional_info[i].contents[1].text.strip()
                 value = additional_info[i].contents[3].text.strip()
                 data[key] = value
-            return data
+                # field_names.append(key) NOTE : .....
+            print(data)
         except AttributeError :
             print("NOT FOUND THE PRODUCT :",product) ##tab-additional_information > table > tbody
+        # print(field_names) With this I got all the possible attributes for each product NOTE:~This variable was used just once for non static attributes~
+
+def cleaned_list(lst:list):
+    """This function removes duplacted valus of a given list using casting of type :set object """
+    return set(lst)
 
 # start = time.time()
-data = get_product_info()
+# data = get_product_info()
+# print(data)
+lst = ['Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity','Gender', 'Material', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size','Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color','Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color','Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size','Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color','Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Pattern','Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern','Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size','Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size','Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity','Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Activity', 'Gender', 'Material', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Activity', 'Gender', 'Material', 'Size', 'Activity', 'Gender', 'Material', 'Size', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Activity', 'Pattern', 'Material', 'Strap', 'Style', 'Size', 'Color', 'Activity', 'Gender', 'Material', 'Size', 'Color', 'Size', 'Color']
 
 # CSV preparation : 
-field_names = []
-for i in data.keys():
-    print(i)
+field_names = ['Link','Name','Price','Activity', 'Gender', 'Color', 'Style', 'Pattern', 'Material', 'Strap', 'Size']
