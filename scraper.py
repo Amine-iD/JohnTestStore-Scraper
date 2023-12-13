@@ -68,10 +68,6 @@ def get_product_info():
         except AttributeError :
             print("NOT FOUND THE PRODUCT :",product) ##tab-additional_information > table > tbody
 
-def cleaned_list(lst:list):
-    """This function removes duplacted valus of a given list using casting of type :set object """
-    return set(lst)
-
 start = time.time()
 data = get_product_info()
 print(data)
