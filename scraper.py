@@ -65,7 +65,6 @@ def get_product_info():
             return data
         except AttributeError :
             print("NOT FOUND THE PRODUCT :",product) ##tab-additional_information > table > tbody
-            
 
 # start = time.time()
 data = get_product_info()
