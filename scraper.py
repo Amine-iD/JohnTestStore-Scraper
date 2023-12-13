@@ -44,7 +44,6 @@ def get_all_products():
 
 def get_product_info():
     products = get_all_products()
-    FIELD_NAMES = ['Link','Name','Price','Activity', 'Gender', 'Color', 'Style', 'Pattern', 'Material', 'Strap', 'Size']
     for product in products:
         link  =  product["link"]
         name  =  product["name"]
