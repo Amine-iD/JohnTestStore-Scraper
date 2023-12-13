@@ -1,20 +1,17 @@
-from requests_html import HTMLSession
+from requests_html import HTMLSession 
 from bs4 import BeautifulSoup
-import requests
-session = HTMLSession()
 
-def parser(page_number:int):
-    try:
-        url = f'https://gopher1.extrkt.com/?paged={page_number}' # Some iteration 
-        headers = {
+session = HTMLSession()
+headers = {
             "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
-        resp = session.get(url,headers=headers)
-        # resp.html.render(sleep = 2 , keep_page = True , scrolldown = 1)
+def parser(url):
+    try:  
+        resp = session.get(url)
         if resp.status_code == 404:
-            return 404
-        soup = BeautifulSoup(resp.html.raw_html,'lxml')
-        print('page number: ',page_number )
+            return 404  # To make the return value of this function 404 to be used in get_all_products ~! NEEDS TO BE MODIFIED  ~!
+        soup = BeautifulSoup(resp.text ,'lxml')
+        
     except RuntimeWarning as rw:
         print('--'*30)
         print(rw)
@@ -27,23 +24,53 @@ def parser(page_number:int):
     
     return soup
 
-def get_all_products(lst:list):
+def get_all_products():
     """This function gets the products info shown in the page : name / link / price"""
     for page_number in range(1,20):
-        soup = parser(page_number)
+        url = f'https://gopher1.extrkt.com/?paged={page_number}'
+        soup = parser(url)
         if soup == 404:
             return "Page not found!"
         else:
             products = soup.find('ul').find_all('li')
+            print('page number:',page_number)
             for product in products:
                 url = product.a # This gives the price and the name of the product, but used only to get the link (Best.Practice?)
-                link = url['href']
-                name = product.find('h2',{'class' : 'woocommerce-loop-product__title'}).text  
-                price = product.find('span',{'class' : 'price'}).text
-                products_list = {'link' :link , 'product-name' : name , 'product-price' : price}
-                lst.append(products_list)
-            print(lst)
-            lst = [] # to get a new independent list for each page 
+                yield{    
+                    "link" : url['href'],
+                    "name" : product.find('h2',{'class' : 'woocommerce-loop-product__title'}).text,
+                    "price" : product.find('span',{'class' : 'price'}).text
+                    }
+
+def get_product_info():
+    products = get_all_products()
+    for product in products:
+        link  =  product["link"]
+        name  =  product["name"]
+        price =  product['price']
+        resp = session.get(link,headers=headers)
+        soup = parser(link)
+        data = {
+            'link':link ,
+            'name' : name ,
+            'price':price,
+            }
+        try:
+            category = soup.find('div' ,{'class':'product_meta'}).contents[3].text 
+            additional_info = soup.find('table',{'class' : 'woocommerce-product-attributes shop_attributes'}).find_all('tr') 
+            for i in range(len(additional_info)):
+                key = additional_info[i].contents[1].text.strip()
+                value = additional_info[i].contents[3].text.strip()
+                data[key] = value
+            return data
+        except AttributeError :
+            print("NOT FOUND THE PRODUCT :",product) ##tab-additional_information > table > tbody
             
-lst = []
-print(get_all_products(lst))
+
+# start = time.time()
+data = get_product_info()
+
+# CSV preparation : 
+field_names = []
+for i in data.keys():
+    print(i)
