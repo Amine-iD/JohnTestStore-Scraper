@@ -1,6 +1,7 @@
 from requests_html import HTMLSession 
 from bs4 import BeautifulSoup
 import time
+import json
 session = HTMLSession()
 headers = {
             "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -51,24 +52,29 @@ def get_product_info():
         resp = session.get(link,headers=headers)
         soup = parser(link)
         data = {
-            'Link':link ,
-            'Name' : name ,
-            'Price':price,
-            'Categorie' : category
+            "Link":link ,
+            "Name" : name ,
+            "Price":price,
             }
         try:
-            category = soup.find('div' ,{'class':'product_meta'}).contents[3].text 
+            lst = [] # to Store the dictionnaries
+            category = soup.find('div' ,{'class':'product_meta'}).contents[3].contents[1].text 
             additional_info = soup.find('table',{'class' : 'woocommerce-product-attributes shop_attributes'}).find_all('tr') 
             for i in range(len(additional_info)):
                 key = additional_info[i].contents[1].text.strip()
                 value = additional_info[i].contents[3].text.strip()
+                data["Categorie"] = category
                 data[key] = value
-                
+                print(data,',')
+                lst.append(data)
         except AttributeError :
             print("NOT FOUND THE PRODUCT :",product) ##tab-additional_information > table > tbody
+        
+    return lst
 
 start = time.time()
 data = get_product_info()
-print(data)
 end = time.time()
 print('DURATION :' ,end - start)
+with open("JsonFile.json" , 'w') as file:
+    json.dump(data , file)
